@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+  web:
+      build: ./kledopayment-web
+      container_name: kledopayment-web
+      ports:
+          - 8000:8000
+      volumes:
+          - ./kledopayment-web:/app
+      links:
+          - db:db
+      depends_on:
+          - api
+  api:
+      build: ./kledopayment-api
+      container_name: kledopayment-api
+      ports:
+          - 8001:8001
+      volumes:
+          - ./kledopayment-api:/app
+      links:
+          - db:db
+      depends_on:
+          - db
+  db:
+    image: mariadb
+    container_name: kledopayment-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: kledopayment
+    volumes:
+      - ./db:/var/lib/mysql
+
+networks:
+  bridge:
+    driver: bridge
