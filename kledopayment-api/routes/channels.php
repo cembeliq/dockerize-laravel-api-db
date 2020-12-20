@@ -17,7 +17,3 @@ use Illuminate\Support\Facades\Broadcast;
 //     return (int) $user->id === (int) $id;
 // });
 
-Broadcast::channel('delete-payment-channel', function () {
-    // return (int) $user->id === (int) $id;
-    return "halo";
-});

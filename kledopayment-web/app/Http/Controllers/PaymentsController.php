@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PaymentDeleteEvent;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Helper\CallApiHelper;
@@ -16,7 +17,7 @@ class PaymentsController extends Controller
      */
 
     public function index($page = null)
-    {
+    {   
         if ($page) 
         {
             $payments = CallApiHelper::getApi('/payments?page='.$page);
@@ -103,6 +104,7 @@ class PaymentsController extends Controller
         $arr_id = $request->input('checkbox_del');
         foreach($arr_id as $id) {
             $req = CallApiHelper::deleteApi("/payments/".$id);
+            event(new PaymentDeleteEvent($id));
         }
         return redirect()->route('payment.index')
                         ->with('success','Payment delete successfully.');

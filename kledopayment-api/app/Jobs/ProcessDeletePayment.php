@@ -37,8 +37,6 @@ class ProcessDeletePayment implements ShouldQueue
     {
         try {
             $this->payment->delete();
-            event(new PaymentDeleteEvent($this->payment->payment_name));
-            return "Event has been sent!";
         } catch (Exception $e) {
             print_r($e->getMessage());
         }

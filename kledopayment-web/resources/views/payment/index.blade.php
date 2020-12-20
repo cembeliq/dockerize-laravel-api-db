@@ -87,7 +87,6 @@ $next = $payments['current_page'] + 1;
 @endsection
 <script src="//js.pusher.com/3.1/pusher.min.js"></script>
 <script>
-
     Pusher.logToConsole = true;
 
     var pusher = new Pusher('4332a205abc40feffa25', {
@@ -95,9 +94,12 @@ $next = $payments['current_page'] + 1;
         forceTLS: true
     });
     var channel = pusher.subscribe('delete-payment-channel');
-    channel.bind('delete-payment-event', function(data) {
+    channel.bind('pusher:subscription_succeeded', function() {
+        // var triggered = channel.trigger('delete-payment-event', {
+        //     message: "hello"
+        // });
+    });
+    channel.bind("delete-payment-event", function(data) {
         alert(JSON.stringify(data));
     });
-
-
 </script>
