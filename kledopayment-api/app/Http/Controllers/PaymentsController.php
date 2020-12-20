@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\PaymentResource;
 use App\Jobs\ProcessDeletePayment;
+use Exception;
 
 class PaymentsController extends Controller
 {
@@ -107,14 +108,19 @@ class PaymentsController extends Controller
     {
         $payment = Payment::find($id);
 
-        if ($payment)
-        {
-            $deleteJob = (new ProcessDeletePayment($payment))->delay(Carbon::now()->addSeconds(5));
-            dispatch($deleteJob);
+        if ($payment) {
+            try {
+                $deleteJob = (new ProcessDeletePayment($payment))->delay(Carbon::now()->addSeconds(5));
+                dispatch($deleteJob);
+                return response(['message' => 'ID ' . $id . ' was deleted']);
+            } catch (Exception $e) {
+                print_r($e->getMessage());
+            }
+
             // ProcessDeletePayment::dispatch($payment);
-            return response(['message' => 'ID '.$id.' was deleted']);
-        } else{
-            return response(['message' => 'ID '.$id.' not found']);
+
+        } else {
+            return response(['message' => 'ID ' . $id . ' not found']);
         }
     }
 }

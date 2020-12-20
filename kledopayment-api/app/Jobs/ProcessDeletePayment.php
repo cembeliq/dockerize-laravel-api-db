@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\PaymentDeleteEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Payment;
 use App\Http\Controllers\PaymentsController;
+use Exception;
 
 class ProcessDeletePayment implements ShouldQueue
 {
@@ -33,6 +35,12 @@ class ProcessDeletePayment implements ShouldQueue
      */
     public function handle()
     {
-        $this->payment->delete();
+        try {
+            $this->payment->delete();
+            event(new PaymentDeleteEvent($this->payment->payment_name));
+            return "Event has been sent!";
+        } catch (Exception $e) {
+            print_r($e->getMessage());
+        }
     }
 }

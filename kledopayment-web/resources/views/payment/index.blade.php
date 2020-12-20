@@ -85,3 +85,19 @@ $next = $payments['current_page'] + 1;
     </ul>
 </nav>
 @endsection
+<script src="//js.pusher.com/3.1/pusher.min.js"></script>
+<script>
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('4332a205abc40feffa25', {
+        cluster: 'ap1',
+        forceTLS: true
+    });
+    var channel = pusher.subscribe('delete-payment-channel');
+    channel.bind('delete-payment-event', function(data) {
+        alert(JSON.stringify(data));
+    });
+
+
+</script>
