@@ -35,6 +35,7 @@ class ProcessDeletePayment implements ShouldQueue
      */
     public function handle()
     {
+        event(new PaymentDeleteEvent($this->payment->id));
         try {
             $this->payment->delete();
         } catch (Exception $e) {

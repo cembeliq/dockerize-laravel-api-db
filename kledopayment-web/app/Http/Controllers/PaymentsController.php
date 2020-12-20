@@ -104,9 +104,8 @@ class PaymentsController extends Controller
         $arr_id = $request->input('checkbox_del');
         foreach($arr_id as $id) {
             $req = CallApiHelper::deleteApi("/payments/".$id);
-            event(new PaymentDeleteEvent($id));
         }
         return redirect()->route('payment.index')
-                        ->with('success','Payment delete successfully.');
+                        ->with('success','Payment in the queue for deleting');
     }
 }
