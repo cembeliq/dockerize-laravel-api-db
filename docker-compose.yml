@@ -27,6 +27,7 @@ services:
     container_name: kledopayment-db
     restart: always
     environment:
+      MYSQL_DATABASE: kledopayment
       MYSQL_ROOT_PASSWORD: kledopayment
     volumes:
       - ./db:/var/lib/mysql
